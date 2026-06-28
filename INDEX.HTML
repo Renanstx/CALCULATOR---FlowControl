@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Controle de Porcentagem - DHL P&G ITATIAIA</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#111;
+color:white;
+padding:20px;
+}
+
+h1{
+color:#FFCC00;
+text-align:center;
+margin-bottom:25px;
+}
+
+.principal{
+display:flex;
+gap:20px;
+justify-content:center;
+align-items:flex-start;
+flex-wrap:wrap;
+}
+
+.card{
+background:#1c1c1c;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,.5);
+}
+
+.porcentagem{
+width:360px;
+}
+
+.calculadora{
+width:280px;
+}
+
+.anotacoes{
+margin-top:20px;
+width:280px;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+border:none;
+border-radius:6px;
+font-size:16px;
+}
+
+button{
+cursor:pointer;
+border:none;
+border-radius:6px;
+padding:12px;
+font-size:16px;
+}
+
+.botoes{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+.calcular{
+background:#FFCC00;
+font-weight:bold;
+flex:1;
+}
+
+.limpar{
+background:#333;
+color:white;
+flex:1;
+}
+
+.resultado{
+margin-top:20px;
+text-align:center;
+font-size:36px;
+font-weight:bold;
+color:#FFCC00;
+}
+
+.barra{
+margin-top:15px;
+height:22px;
+background:#333;
+border-radius:20px;
+overflow:hidden;
+}
+
+.progresso{
+width:0%;
+height:100%;
+background:#FFCC00;
+transition:.4s;
+}
+
+.display{
+width:100%;
+height:60px;
+font-size:28px;
+text-align:right;
+padding:10px;
+margin-bottom:10px;
+background:#000;
+color:#FFCC00;
+border-radius:8px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+}
+
+.grid button{
+height:55px;
+background:#333;
+color:white;
+font-size:20px;
+}
+
+.grid button:hover{
+background:#555;
+}
+
+.igual{
+background:#FFCC00!important;
+color:black!important;
+}
+
+textarea{
+width:100%;
+height:140px;
+resize:none;
+padding:10px;
+border:none;
+border-radius:8px;
+font-size:15px;
+}
+
+footer{
+text-align:center;
+margin-top:25px;
+font-size:11px;
+opacity:0.4;
+}
+
+@media(max-width:900px){
+.principal{
+flex-direction:column;
+align-items:center;
+}
+
+.porcentagem,
+.calculadora,
+.anotacoes{
+width:100%;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>CALCULATOR - FlowControl</h1>
+
+<div class="principal">
+
+<div class="card porcentagem">
+
+<label>Modo de cálculo</label>
+<select id="modo">
+<option value="descarregamento">Descarregamento</option>
+<option value="carregamento">Carregamento</option>
+</select>
+
+<label>Quantidade Total</label>
+<input type="number" id="total" inputmode="numeric" placeholder="Ex: 1200">
+
+<label>Quantidade em Processo</label>
+<input type="number" id="executado" inputmode="numeric" placeholder="Ex: 300">
+
+<div class="botoes">
+<button class="calcular" onclick="calcular()">Calcular</button>
+<button class="limpar" onclick="limpar()">Limpar</button>
+</div>
+
+<div class="resultado" id="resultado">0%</div>
+
+<div class="barra">
+<div class="progresso" id="barra"></div>
+</div>
+
+</div>
+
+<div class="card calculadora">
+
+<input class="display" id="display" readonly>
+
+<div class="grid">
+
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button onclick="add('/')">÷</button>
+
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button onclick="add('*')">×</button>
+
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button onclick="add('-')">-</button>
+
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button class="igual" onclick="calcularCalc()">=</button>
+<button onclick="add('+')">+</button>
+
+<button onclick="limparCalc()">C</button>
+<button onclick="apagar()">⌫</button>
+<button onclick="add('%')">%</button>
+<button onclick="add('(')">(</button>
+<button onclick="add(')')">)</button>
+
+</div>
+
+</div>
+
+<div class="card anotacoes">
+
+<h3 style="color:#FFCC00;margin-bottom:10px;">Anotações</h3>
+
+<textarea id="notas" placeholder="Digite suas anotações..."></textarea>
+
+<div style="display:flex;gap:10px;margin-top:10px;">
+<button style="background:#FFCC00;flex:1;" onclick="salvarNotas()">Salvar</button>
+<button style="background:#333;color:white;flex:1;" onclick="limparNotas()">Limpar</button>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© Created by Renan Teixeira • Controle de Porcentagem v1.0
+</footer>
+
+<script>
+
+/* ===== PORCENTAGEM ===== */
+
+function calcular(){
+let total = parseFloat(document.getElementById("total").value);
+let executado = parseFloat(document.getElementById("executado").value);
+let modo = document.getElementById("modo").value;
+
+if(isNaN(total) || isNaN(executado)){
+alert("Preencha todos os campos.");
+return;
+}
+
+let porcentagem = (executado / total) * 100;
+
+if(modo === "carregamento"){
+porcentagem = 100 - porcentagem;
+}
+
+porcentagem = Math.max(0, Math.min(100, porcentagem));
+
+document.getElementById("resultado").innerText = porcentagem.toFixed(2) + "%";
+document.getElementById("barra").style.width = porcentagem + "%";
+}
+
+function limpar(){
+document.getElementById("total").value = "";
+document.getElementById("executado").value = "";
+document.getElementById("resultado").innerText = "0%";
+document.getElementById("barra").style.width = "0%";
+}
+
+/* ===== CALCULADORA ===== */
+
+function add(valor){
+document.getElementById("display").value += valor;
+}
+
+function limparCalc(){
+document.getElementById("display").value = "";
+}
+
+function apagar(){
+let d = document.getElementById("display");
+d.value = d.value.slice(0, -1);
+}
+
+function calcularCalc(){
+let visor = document.getElementById("display");
+
+try{
+let expressao = visor.value.replace(/%/g, "/100");
+visor.value = Function("return " + expressao)();
+}catch{
+visor.value = "Erro";
+}
+}
+
+/* ===== TECLADO (CORRIGIDO) ===== */
+
+document.addEventListener("keydown", function(e){
+
+const ativo = document.activeElement.tagName.toLowerCase();
+if(ativo === "input" || ativo === "textarea") return;
+
+const visor = document.getElementById("display");
+
+if((e.key >= "0" && e.key <= "9") || "+-*/().".includes(e.key)){
+visor.value += e.key;
+}
+
+if(e.key === "Enter"){
+e.preventDefault();
+calcularCalc();
+}
+
+if(e.key === "Backspace"){
+visor.value = visor.value.slice(0, -1);
+}
+
+if(e.key === "Escape"){
+visor.value = "";
+}
+
+});
+
+/* ===== NOTAS ===== */
+
+function salvarNotas(){
+const texto = document.getElementById("notas").value;
+localStorage.setItem("notas_dhl", texto);
+alert("Anotações salvas!");
+}
+
+function limparNotas(){
+if(confirm("Deseja apagar as anotações?")){
+document.getElementById("notas").value = "";
+localStorage.removeItem("notas_dhl");
+}
+}
+
+window.onload = function(){
+const notas = localStorage.getItem("notas_dhl");
+if(notas) document.getElementById("notas").value = notas;
+document.getElementById("total").focus();
+};
+
+/* ===== ENTER NO EXECUTADO ===== */
+
+document.getElementById("executado").addEventListener("keypress", function(e){
+if(e.key === "Enter") calcular();
+});
+
+/* ===== BARRA DINÂMICA ===== */
+
+const barra = document.getElementById("barra");
+const resultado = document.getElementById("resultado");
+
+const observer = new MutationObserver(function(){
+let valor = parseFloat(resultado.innerText);
+if(isNaN(valor)) return;
+
+if(valor < 50) barra.style.background = "#2ecc71";
+else if(valor < 80) barra.style.background = "#f1c40f";
+else barra.style.background = "#e74c3c";
+});
+
+observer.observe(resultado, { childList: true });
+
+/* ===== COPIAR ===== */
+
+const copiar = document.createElement("button");
+copiar.innerHTML = "Copiar Resultado";
+copiar.style.marginTop = "15px";
+copiar.style.width = "100%";
+copiar.style.padding = "12px";
+copiar.style.background = "#FFCC00";
+copiar.style.border = "none";
+copiar.style.borderRadius = "6px";
+copiar.style.fontWeight = "bold";
+copiar.style.cursor = "pointer";
+
+copiar.onclick = function(){
+navigator.clipboard.writeText(resultado.innerText);
+alert("Resultado copiado!");
+};
+
+document.querySelector(".porcentagem").appendChild(copiar);
+
+</script>
+
+</body>
+</html>
